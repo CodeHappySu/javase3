@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @Auther: suhuan
  * @Date: 2022/10/8 - 10 - 08 - 20:14
+ * 程序、进程和线程的理解
  */
 public class Thread01 extends Thread {//创建线程方式1：继承Thread
 
