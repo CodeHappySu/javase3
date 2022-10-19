@@ -4,7 +4,7 @@ package com.suhuan.test;
  * @Auther: suhuan
  * @Date: 2022/10/10 - 10 - 10 - 22:15
  */
-public class Windows2 implements Runnable{
+public class Windows2 implements Runnable {
     //比较继承
     //实现的要好一点，开发中优先选择实现Runnable接口的方式，没有单继承的局限性，多线程处理共享数据的情况
 
@@ -13,20 +13,30 @@ public class Windows2 implements Runnable{
     @Override
     public void run() {
         while (true) {
-            if (ticket != 0) {
-                System.out.println(Thread.currentThread().getName()+"还剩" + ticket-- + "张票");
-            } else {
-                break;
+            synchronized (this) {
+                if (ticket > 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + "还剩" + ticket-- + "张票");
+                } else {
+                    break;
+                }
             }
         }
     }
 }
-class Test2{
+
+class Test2 {
     public static void main(String[] args) {
-        Windows2 w = new Windows2();
+        Windows2 w = new Windows2();//new一个这个对象，这个对象中的run方法中是线程真正干的事情
+
         Thread t1 = new Thread(w);
         Thread t2 = new Thread(w);
         Thread t3 = new Thread(w);
+
         t1.setName("窗口1");
         t2.setName("窗口2");
         t3.setName("窗口3");

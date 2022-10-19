@@ -7,7 +7,7 @@ package com.suhuan.test;
 public class Windows extends Thread {
 
     private static int ticket = 100;
-
+    private static Object obj = new Object();
     private String name;
 
     public Windows(String name) {
@@ -17,10 +17,17 @@ public class Windows extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (ticket != 0) {
-                System.out.println(name + "还剩" + ticket-- + "张票");
-            } else {
-                break;
+            synchronized (obj) {
+                if (ticket > 0) {
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(name + "还剩" + ticket-- + "张票");
+                } else {
+                    break;
+                }
             }
         }
     }
